@@ -1,10 +1,15 @@
 package com.example.JavaSQL.controllers;
 
+import com.example.JavaSQL.entity.PersonDTO;
 import com.example.JavaSQL.entity.PersonEntity;
 import com.example.JavaSQL.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -19,14 +24,20 @@ public class PersonController {
         this.service = service;
     }
 
-    @GetMapping("/find")
-    public String findPerson(@RequestParam Long id) {
-        return service.findPerson(id).getName();
+    @GetMapping("/people/find")
+    public ResponseEntity<PersonEntity> findPerson(@RequestParam Long id) {
+        return ResponseEntity.ok(service.findPerson(id));
     }
 
-    @GetMapping("/list")
-    public List<PersonEntity> findAll() {
-        return service.getAll();
+    @GetMapping("/people/list")
+    public ResponseEntity<List<PersonEntity>> listAll() {
+        return ResponseEntity.ok(service.getAll());
+    }
+
+    @PostMapping("/people")
+    public ResponseEntity<?> register(@RequestBody PersonDTO data) {
+        service.resgister(data);
+        return ResponseEntity.created();
     }
 }
 
