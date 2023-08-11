@@ -54,7 +54,7 @@ public class PersonService {
             return (personRepo.findById(newPerson.getId()).orElse(null));
 
         } catch (Exception e) {
-            log.error("Exception {}", e);
+            log.error("Exception {e}", e);
         }
         return null;
     }
