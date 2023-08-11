@@ -1,5 +1,6 @@
 package com.example.JavaSQL.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,5 +20,8 @@ public class AddressEntity implements Serializable {
 
     @Column(name = "address")
     private String address;
+
+    @Column(name = "person_id")
+    private long person_id;
 
 }
