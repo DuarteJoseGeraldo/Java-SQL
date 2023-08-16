@@ -25,12 +25,12 @@ public class PersonController {
     }
 
     @GetMapping("/find")
-    public ResponseEntity<PersonEntity> findPerson(@RequestParam Long id) {
+    public ResponseEntity<PersonEntity> findPerson(@RequestParam Long id) throws Exception {
         return ResponseEntity.ok(service.findPerson(id));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<PersonEntity>> listAll() {
+    public ResponseEntity<List<PersonEntity>> listAll() throws Exception {
         return ResponseEntity.ok(service.getAll());
     }
 

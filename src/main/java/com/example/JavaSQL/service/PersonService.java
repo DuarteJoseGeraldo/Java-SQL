@@ -22,23 +22,17 @@ public class PersonService {
     @Autowired
     AddressRepository addressRepo;
 
-    public PersonEntity findPerson(Long id) {
-        try {
-            Optional<PersonEntity> person = personRepo.findById(id);
-            return (person.orElse(null));
-        } catch (Exception e) {
-            log.error("Exception {}", e);
-        }
-        return null;
+    public PersonEntity findPerson(Long id) throws Exception {
+
+        Optional<PersonEntity> person = personRepo.findById(id);
+        return (person.orElse(null));
+
+
     }
 
-    public List<PersonEntity> getAll() {
-        try {
-            return personRepo.findAllByIdAfter((long) 0);
-        } catch (Exception e) {
-            log.error("Exception {}", e);
-        }
-        return null;
+    public List<PersonEntity> getAll() throws Exception {
+        return personRepo.findAllByIdAfter((long) 0);
+
     }
 
     public PersonEntity register(PersonDTO data) throws Exception {
@@ -46,8 +40,7 @@ public class PersonService {
         if (Objects.isNull(data)) throw new Exception("Person data is null");
         if (Objects.isNull((data.getName())) || Objects.isNull((data.getAddress())))
             throw new Exception("Person data has null content");
-        PersonEntity newPerson = new PersonEntity();
-        newPerson.setName(data.getName());
+        PersonEntity newPerson = PersonEntity.builder().name(data.getName()).build();
         newPerson = personRepo.save(newPerson);
 
         AddressEntity newAddress = new AddressEntity();
