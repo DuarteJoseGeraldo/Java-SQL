@@ -1,6 +1,6 @@
 package com.example.JavaSQL.controllers;
 
-import com.example.JavaSQL.entity.PersonDTO;
+import com.example.JavaSQL.DTOs.PersonDTO;
 import com.example.JavaSQL.entity.PersonEntity;
 import com.example.JavaSQL.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,15 +35,18 @@ public class PersonController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> register(@RequestBody PersonDTO data) {
+    public ResponseEntity<?> register(@RequestBody PersonDTO data) throws Exception {
         PersonEntity newPerson = service.register(data);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{id}")
                 .buildAndExpand(newPerson)
                 .toUri();
-
         return ResponseEntity.created(location).body(newPerson);
+    }
+
+    @PatchMapping("/update")
+    public void update(@RequestBody PersonDTO data, @RequestParam Long id) {
+        System.out.println(data + " " + id);
     }
 }

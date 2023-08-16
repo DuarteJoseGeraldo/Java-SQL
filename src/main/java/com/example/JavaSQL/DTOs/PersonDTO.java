@@ -1,11 +1,11 @@
-package com.example.JavaSQL.entity;
+package com.example.JavaSQL.DTOs;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class AddressDTO {
+public class PersonDTO {
+    private String name;
     private String address;
-    
 }

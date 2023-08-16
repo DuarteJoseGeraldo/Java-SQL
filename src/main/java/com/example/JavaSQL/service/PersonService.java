@@ -1,7 +1,7 @@
 package com.example.JavaSQL.service;
 
 import com.example.JavaSQL.entity.AddressEntity;
-import com.example.JavaSQL.entity.PersonDTO;
+import com.example.JavaSQL.DTOs.PersonDTO;
 import com.example.JavaSQL.entity.PersonEntity;
 import com.example.JavaSQL.repository.AddressRepository;
 import com.example.JavaSQL.repository.PersonRepository;
@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,23 +41,21 @@ public class PersonService {
         return null;
     }
 
-    public PersonEntity register(PersonDTO data) {
-        try {
-            PersonEntity newPerson = new PersonEntity();
-            newPerson.setName(data.getName());
-            newPerson = personRepo.save(newPerson);
+    public PersonEntity register(PersonDTO data) throws Exception {
 
-            AddressEntity newAddress = new AddressEntity();
-            newAddress.setAddress(data.getAddress());
-            newAddress.setPerson_id(newPerson.getId());
-            addressRepo.save(newAddress);
+        if (Objects.isNull(data)) throw new Exception("Person data is null");
+        if (Objects.isNull((data.getName())) || Objects.isNull((data.getAddress())))
+            throw new Exception("Person data has null content");
+        PersonEntity newPerson = new PersonEntity();
+        newPerson.setName(data.getName());
+        newPerson = personRepo.save(newPerson);
 
-            return (personRepo.findById(newPerson.getId()).orElse(null));
+        AddressEntity newAddress = new AddressEntity();
+        newAddress.setAddress(data.getAddress());
+        newAddress.setPerson_id(newPerson.getId());
+        addressRepo.save(newAddress);
 
-        } catch (Exception e) {
-            log.error("Exception {e}", e);
-        }
-        return null;
+        return (personRepo.findById(newPerson.getId()).orElse(null));
     }
 }
 
