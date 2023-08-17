@@ -25,12 +25,12 @@ public class PersonController {
     }
 
     @GetMapping("/find")
-    public ResponseEntity<PersonEntity> findPerson(@RequestParam Long id) throws Exception {
+    public ResponseEntity<?> findPerson(@RequestParam Long id) throws Exception {
         return ResponseEntity.ok(service.findPerson(id));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<PersonEntity>> listAll() throws Exception {
+    public ResponseEntity<?> listAll() throws Exception {
         return ResponseEntity.ok(service.getAll());
     }
 
@@ -45,8 +45,8 @@ public class PersonController {
         return ResponseEntity.created(location).body(newPerson);
     }
 
-    @PatchMapping("/update")
-    public void update(@RequestBody PersonDTO data, @RequestParam Long id) {
-        System.out.println(data + " " + id);
+    @PutMapping("/update")
+    public ResponseEntity<?> update(@RequestBody PersonDTO data, @RequestParam Long id) throws Exception {
+        return ResponseEntity.status(200).body("ok");
     }
 }

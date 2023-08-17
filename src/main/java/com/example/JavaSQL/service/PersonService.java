@@ -25,9 +25,8 @@ public class PersonService {
     public PersonEntity findPerson(Long id) throws Exception {
 
         Optional<PersonEntity> person = personRepo.findById(id);
-        return (person.orElse(null));
-
-
+        if (person.isPresent()) return person.get();
+        throw new Exception("Can not find a person");
     }
 
     public List<PersonEntity> getAll() throws Exception {
@@ -38,9 +37,10 @@ public class PersonService {
     public PersonEntity register(PersonDTO data) throws Exception {
 
         if (Objects.isNull(data)) throw new Exception("Person data is null");
-        if (Objects.isNull((data.getName())) || Objects.isNull((data.getAddress())))
-            throw new Exception("Person data has null content");
-        PersonEntity newPerson = PersonEntity.builder().name(data.getName()).build();
+        if (Objects.isNull((data.getName()))) throw new Exception("Person name is null");
+        if (Objects.isNull((data.getAddress()))) throw new Exception("Person Address is null");
+        PersonEntity newPerson = new PersonEntity();
+        newPerson.setName(data.getName());
         newPerson = personRepo.save(newPerson);
 
         AddressEntity newAddress = new AddressEntity();
@@ -51,5 +51,3 @@ public class PersonService {
         return (personRepo.findById(newPerson.getId()).orElse(null));
     }
 }
-
-

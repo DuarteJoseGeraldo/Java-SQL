@@ -11,6 +11,6 @@ public class ErrorHandlerController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(Exception.class)
     public ErrorDTO handle(Exception exception) {
-        return ErrorDTO.builder().message(exception.getMessage()).build();
+        return ErrorDTO.builder().errorMessage(exception.getMessage()).build();
     }
 }
