@@ -47,6 +47,11 @@ public class PersonController {
 
     @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody PersonDTO data, @RequestParam Long id) throws Exception {
-        return ResponseEntity.status(200).body("ok");
+        PersonEntity updatedData = service.update(data, id);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .buildAndExpand(updatedData)
+                .toUri();
+        return ResponseEntity.created(location).body(updatedData);
     }
 }
