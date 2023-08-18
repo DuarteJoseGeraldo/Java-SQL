@@ -78,4 +78,8 @@ public class PersonService {
         }
         throw new Exception("Can not find a person");
     }
+
+    public void delete(long id) throws Exception {
+        personRepo.deleteById(id);
+    }
 }

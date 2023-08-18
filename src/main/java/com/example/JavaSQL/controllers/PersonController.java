@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @Controller
 @RequestMapping("/people")
@@ -53,5 +52,11 @@ public class PersonController {
                 .buildAndExpand(updatedData)
                 .toUri();
         return ResponseEntity.created(location).body(updatedData);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> delete(@RequestParam Long id) throws Exception {
+        service.delete(id);
+        return ResponseEntity.status(200).build();
     }
 }
