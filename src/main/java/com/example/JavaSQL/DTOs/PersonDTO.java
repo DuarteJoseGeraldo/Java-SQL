@@ -7,5 +7,6 @@ import lombok.Data;
 @Builder
 public class PersonDTO {
     private String name;
+    private String cpf;
     private String address;
 }

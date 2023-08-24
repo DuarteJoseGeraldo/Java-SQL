@@ -22,6 +22,9 @@ public class PersonEntity implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "cpf")
+    private String cpf;
+
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private List<AddressEntity> address = null;

@@ -1,5 +1,6 @@
 package com.example.JavaSQL.service;
 
+import com.example.JavaSQL.api.CpfValidatorClient;
 import com.example.JavaSQL.entity.AddressEntity;
 import com.example.JavaSQL.DTOs.PersonDTO;
 import com.example.JavaSQL.entity.PersonEntity;
@@ -23,6 +24,9 @@ public class PersonService {
     @Autowired
     AddressRepository addressRepo;
 
+    @Autowired
+    CpfValidatorClient validatorClient;
+
     public PersonEntity findPerson(Long id) throws Exception {
 
         Optional<PersonEntity> person = personRepo.findById(id);
@@ -38,19 +42,28 @@ public class PersonService {
     public PersonEntity register(PersonDTO data) throws Exception {
 
         if (Objects.isNull(data)) throw new Exception("Person data is null");
-        if (Objects.isNull((data.getName()))) throw new Exception("Person name is null");
-        if (Objects.isNull((data.getAddress()))) throw new Exception("Person Address is null");
+        if (Objects.isNull((data.getName()))) throw new Exception("Person name is required");
+        if (Objects.isNull((data.getAddress()))) throw new Exception("Person Address is required");
+        if (Objects.isNull(data.getCpf())) throw new Exception("Cpf is required");
+        if (!StringUtils.hasLength(data.getName())) throw new Exception("Name field is empty");
+        if (!StringUtils.hasLength(data.getAddress())) throw new Exception("Address field is empty");
+        if (!StringUtils.hasLength(data.getCpf())) throw new Exception("CPF field is empty");
 
-        PersonEntity newPerson = new PersonEntity();
-        newPerson.setName(data.getName());
-        newPerson = personRepo.save(newPerson);
+        if (validatorClient.validateCpf(data)) {
+            PersonEntity newPerson = new PersonEntity();
+            newPerson.setName(data.getName());
+            newPerson.setCpf(data.getCpf());
+            newPerson = personRepo.save(newPerson);
 
-        AddressEntity newAddress = new AddressEntity();
-        newAddress.setAddress(data.getAddress());
-        newAddress.setPerson_id(newPerson.getId());
-        addressRepo.save(newAddress);
+            AddressEntity newAddress = new AddressEntity();
+            newAddress.setAddress(data.getAddress());
+            newAddress.setPerson_id(newPerson.getId());
+            addressRepo.save(newAddress);
 
-        return (personRepo.findById(newPerson.getId()).orElse(null));
+            return (personRepo.findById(newPerson.getId()).orElse(null));
+        }
+        throw new Exception("Invalid CPF");
+
     }
 
     public PersonEntity update(PersonDTO data, long id) throws Exception {
