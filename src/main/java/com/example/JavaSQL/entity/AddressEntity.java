@@ -1,6 +1,7 @@
 package com.example.JavaSQL.entity;
 
 import lombok.Data;
+import org.springframework.data.redis.core.RedisHash;
 
 
 import javax.persistence.*;

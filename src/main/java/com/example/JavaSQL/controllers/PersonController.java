@@ -31,7 +31,7 @@ public class PersonController {
 
     @GetMapping("/find")
     public ResponseEntity<?> findPerson(@RequestParam Long id) throws Exception {
-        return ResponseEntity.ok(personService.findPerson(id));
+        return ResponseEntity.ok(personService.findPersonCached(id));
     }
 
     @GetMapping("/list")

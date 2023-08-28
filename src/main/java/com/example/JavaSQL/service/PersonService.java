@@ -8,6 +8,7 @@ import com.example.JavaSQL.repository.AddressRepository;
 import com.example.JavaSQL.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -27,16 +28,29 @@ public class PersonService {
     @Autowired
     CpfValidatorClient validatorClient;
 
-    public PersonEntity findPerson(Long id) throws Exception {
+    private PersonDTO findPerson(Long id) throws Exception {
 
         Optional<PersonEntity> person = personRepo.findById(id);
-        if (person.isPresent()) return person.get();
+        if (person.isPresent()) {
+
+            return PersonDTO.builder()
+                    .id(person.get().getId())
+                    .name(person.get().getName())
+                    .cpf(person.get().getCpf())
+                    .address(person.get().getAddress().get(0).getAddress())
+                    .build();
+        }
         throw new Exception("Can not find a person");
     }
 
     public List<PersonEntity> getAll() throws Exception {
         return personRepo.findAllByIdAfter((long) 0);
 
+    }
+
+    @Cacheable(value = "person", key = "#id")
+    public PersonDTO findPersonCached(long id) throws Exception {
+        return findPerson(id);
     }
 
     public PersonEntity register(PersonDTO data) throws Exception {
