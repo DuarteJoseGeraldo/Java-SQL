@@ -4,7 +4,6 @@ logging:
     org.springframework: "INFO"
     org.springframework.cache: "DEBUG"
 
-
 spring:
   application:
     name: "@project.JavaSQL@"
@@ -15,19 +14,18 @@ spring:
     username: root
     password: pwd123
     driver-class-name: com.mysql.cj.jdbc.Driver
-  flyway:
-    locations: db/migration
   jpa:
     open-in-view: false
   redis:
     host: localhost
     port: 6379
     clientType: jedis
+    use-key-prefix: true
+    key-prefix: javasql-
   cache:
     type: redis
     redis:
       time-to-live: 300000
       cache-null-values: false
-
-
-
+  flyway:
+    locations: db/migration
